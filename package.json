@@ -1,0 +1,13 @@
+{
+  "name": "vibeqr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VietQR-compatible QR image API with ZaloPay native support (hybrid payload).",
+  "scripts": {
+    "build": "node scripts/build-dist.mjs",
+    "deploy": "node scripts/build-dist.mjs && wrangler pages deploy"
+  },
+  "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2"
+  }
+}
