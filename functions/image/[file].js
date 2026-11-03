@@ -53,7 +53,7 @@ export async function onRequest(context) {
   // printed holder name is the owner's chosen display name.
 
   const payload = buildPayload({ amount, addInfo });
-  const svg = renderSvg(template, payload, { amount, addInfo });
+  const svg = renderSvg(template, payload, { amount });
   // A URL fully determines its image, so it is immutable.
   const cacheHeaders = { "cache-control": "public, max-age=31536000, immutable" };
 
