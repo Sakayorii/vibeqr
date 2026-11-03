@@ -4,8 +4,9 @@
 
 vibeqr serves QR code images from URLs, exactly like the VietQR
 Quick Link (`img.vietqr.io/image/...`): same URL shape, same
-parameters, same three templates, same artwork. The one thing it
-does differently is the payload inside the code.
+parameters, same templates, same artwork, plus two templates in
+the payOS checkout style (`vietqr_pro` and `payos`). The one
+thing it does differently is the payload inside the code.
 
 A code from img.vietqr.io carries only the bank block, so a
 ZaloPay user who scans it is pushed through a bank-transfer flow
@@ -46,7 +47,7 @@ https://qr.sakayori.me/image/970454-99ZP26301M80823757-compact.svg?amount=10000&
 |--------------|------------------------------------------|-------|
 | `BANK_ID`    | anything                                 | Accepted for compatibility, ignored. |
 | `ACCOUNT_NO` | anything                                 | Accepted for compatibility, ignored. |
-| `TEMPLATE`   | `qr_only`, `compact`, `compact2`         | Artwork replicates the VietQR templates (below). |
+| `TEMPLATE`   | `qr_only`, `compact`, `compact2`, `vietqr_pro`, `payos` | Artwork replicates the VietQR templates, plus the payOS checkout decor (below). |
 | `FORMAT`     | `svg`, `png`                             | See Formats. `.jpg` is never served. |
 
 ### Query parameters
@@ -86,6 +87,22 @@ QR matrix differs, because it encodes the hybrid payload.
 | `qr_only`  | 490 x 490 | none |
 | `compact`  | 540 x 540 | none |
 | `compact2` | 540 x 640 | holder name, account number, amount (when given) |
+| `vietqr_pro` | 540 x 640 | account number, amount (when given) |
+| `payos`    | 540 x 646-708 | bank, holder name, account number, amount and transfer content (when given) |
+
+`vietqr_pro` is the frame payOS serves inside its checkout page
+(pay.payos.vn embeds the QR as a vietqr_pro Quick Link image), so
+its frame is extracted from vietqr.io for the owner account the
+same way as the other VietQR frames, BVBank logo included.
+
+`payos` replicates the payOS checkout card itself: the official
+payOS logo (extracted from pay.payos.vn) on top, the QR under it
+with the same VietQR center logo, then the detail rows the
+checkout page lists (bank, holder, account, amount, transfer
+content). The card is drawn as native SVG, so its height grows
+with the number of rows printed. payOS has no Quick Link style
+template set of its own; its own QR generator offers the VietQR
+templates above.
 
 One deliberate exception, owner choice: `compact2` prints the
 holder name as **Lê Huy Khánh** (normal Vietnamese spelling with
@@ -190,3 +207,5 @@ custom domain `qr.sakayori.me`.
 - Template artwork: VietQR Quick Link templates (NAPAS/VietQR
   branding belongs to their owners); vibeqr exists to generate
   payloads those templates cannot, for the owner's own account.
+- payOS template artwork: the payOS logo from pay.payos.vn
+  (payOS/Casso branding belongs to its owner).

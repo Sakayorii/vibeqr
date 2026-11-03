@@ -10,7 +10,7 @@ import { renderSvg } from "../_lib/render.js";
 import { TEMPLATES } from "../_lib/templates.js";
 import { svgToPng } from "../_lib/png.js";
 
-const FILE_RE = /^.+-(qr_only|compact2|compact)\.(svg|png)$/;
+const FILE_RE = /^.+-(payos|vietqr_pro|qr_only|compact2|compact)\.(svg|png)$/;
 const AMOUNT_RE = /^\d{1,13}$/;
 const ADDINFO_RE = /^[\x20-\x7E]{1,50}$/;
 
@@ -29,7 +29,7 @@ export async function onRequest(context) {
   if (!m) {
     return jsonError(
       404,
-      "expected /image/<BANK_ID>-<ACCOUNT_NO>-<qr_only|compact|compact2>.<svg|png>"
+      "expected /image/<BANK_ID>-<ACCOUNT_NO>-<qr_only|compact|compact2|vietqr_pro|payos>.<svg|png>"
     );
   }
   const template = m[1];
@@ -53,7 +53,7 @@ export async function onRequest(context) {
   // printed holder name is the owner's chosen display name.
 
   const payload = buildPayload({ amount, addInfo });
-  const svg = renderSvg(template, payload, { amount });
+  const svg = renderSvg(template, payload, { amount, addInfo });
   // A URL fully determines its image, so it is immutable.
   const cacheHeaders = { "cache-control": "public, max-age=31536000, immutable" };
 
